@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 24 20% 98%;
+    --foreground: 222 22% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 22% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 22% 15%;
+    --primary: 213 58% 35%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 36 47% 88%;
+    --secondary-foreground: 222 22% 15%;
+    --muted: 36 24% 92%;
+    --muted-foreground: 215 16% 42%;
+    --accent: 33 65% 86%;
+    --accent-foreground: 222 22% 15%;
+    --destructive: 0 76% 58%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 20 12% 86%;
+    --input: 20 12% 86%;
+    --ring: 213 58% 35%;
+    --radius: 14px;
+    --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
