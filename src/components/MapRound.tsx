@@ -47,11 +47,8 @@ export default function MapRound({ apiKey, guess, actual, reveal, onGuess }: Map
   const mapRef = useRef<GoogleMapsRefs | null>(null)
   const lineRef = useRef<google.maps.Polyline | null>(null)
 
-  const defaultCenter = useMemo<LatLng>(() => {
-    return actual ?? guess ?? { lat: 20, lng: 0 }
-  }, [actual, guess])
-
-  const defaultZoom = actual || guess ? 6 : 2
+  const defaultCenter = useMemo<LatLng>(() => ({ lat: 20, lng: 0 }), [])
+  const defaultZoom = 2
 
   useEffect(() => {
     if (!mapsReady || !mapRef.current) {
