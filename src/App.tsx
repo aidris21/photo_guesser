@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
+import confetti from "canvas-confetti"
 
 import AppHeader from "@/components/AppHeader"
 import CompleteView from "@/components/CompleteView"
@@ -39,6 +40,39 @@ function App() {
       uploads.forEach((image) => URL.revokeObjectURL(image.url))
     }
   }, [uploads])
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return
+    }
+
+    let shouldPlay = true
+    try {
+      const key = "photo-guesser-intro-played"
+      if (sessionStorage.getItem(key)) {
+        shouldPlay = false
+      } else {
+        sessionStorage.setItem(key, "true")
+      }
+    } catch {
+      // If storage is unavailable, play once per page load.
+    }
+
+    if (!shouldPlay) {
+      return
+    }
+
+    const colors = ["#d63b33", "#1f8a4c", "#d6a520", "#2a7db6", "#f0c74a"]
+    const base = { spread: 70, startVelocity: 35, ticks: 220, colors }
+    confetti({ ...base, particleCount: 140, origin: { x: 0.2, y: 0.2 } })
+    const timer = window.setTimeout(() => {
+      confetti({ ...base, particleCount: 160, origin: { x: 0.8, y: 0.15 } })
+    }, 260)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   const handleFiles = async (files: File[]) => {
     const imageFiles = files.filter((file) => file.type.startsWith("image/"))
