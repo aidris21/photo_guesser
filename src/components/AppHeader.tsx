@@ -1,0 +1,31 @@
+import { Badge } from "@/components/ui/badge"
+
+export default function AppHeader() {
+  return (
+    <header className="flex flex-col gap-3">
+      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-muted-foreground">
+        <span className="h-[1px] w-8 bg-muted-foreground/40" />
+        PhotoGuesser
+      </div>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
+            Trace the memories on a living map.
+          </h1>
+          <p className="mt-3 max-w-2xl text-base text-muted-foreground">
+            Upload your favorite photos, then test your memory by dropping pins where those moments
+            happened. The closer you are, the bigger the score.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="secondary" className="px-3 py-1 text-sm">
+            MVP Build
+          </Badge>
+          <Badge variant="outline" className="px-3 py-1 text-sm">
+            GeoGuessr-style scoring
+          </Badge>
+        </div>
+      </div>
+    </header>
+  )
+}
