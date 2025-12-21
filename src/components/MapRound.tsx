@@ -35,7 +35,7 @@ const MapMarker = ({
       <div className={`flex h-5 w-5 items-center justify-center rounded-full ring-8 ${styles}`}>
         <div className="h-2 w-2 rounded-full bg-white/80" />
       </div>
-      <div className="mt-1 whitespace-nowrap rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-foreground shadow">
+      <div className="mt-1 whitespace-nowrap rounded-full bg-background/90 px-2 py-0.5 text-[0.625rem] font-semibold uppercase tracking-wide text-foreground shadow">
         {label}
       </div>
     </div>
@@ -80,7 +80,7 @@ export default function MapRound({ apiKey, guess, actual, reveal, onGuess }: Map
 
   if (!apiKey) {
     return (
-      <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-muted/40 p-6 text-center">
+      <div className="flex h-full min-h-[20rem] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border bg-muted/40 p-6 text-center">
         <span className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Map Disabled
         </span>
@@ -94,7 +94,7 @@ export default function MapRound({ apiKey, guess, actual, reveal, onGuess }: Map
   }
 
   return (
-    <div className="relative h-full min-h-[320px] overflow-hidden rounded-2xl border border-border">
+    <div className="relative h-full min-h-[20rem] overflow-hidden rounded-2xl border border-border">
       <GoogleMapReact
         bootstrapURLKeys={{ key: apiKey }}
         defaultCenter={defaultCenter}

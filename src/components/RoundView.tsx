@@ -43,7 +43,7 @@ export default function RoundView({
           </p>
           <h2 className="text-2xl font-semibold">Pinpoint the memory</h2>
         </div>
-        <div className="min-w-[220px] space-y-2">
+        <div className="min-w-[13.75rem] space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>Progress</span>
             <span>{Math.round(progressValue)}%</span>
@@ -66,7 +66,7 @@ export default function RoundView({
               <img
                 src={currentRound.image.url}
                 alt={currentRound.image.name}
-                className="max-h-[480px] w-full rounded-xl object-contain"
+                className="max-h-[30rem] w-full rounded-xl object-contain"
               />
             </div>
           </CardContent>
@@ -78,7 +78,7 @@ export default function RoundView({
               <CardTitle>Your guess</CardTitle>
               <CardDescription>Click on the map to place a pin close to the photo’s origin.</CardDescription>
             </CardHeader>
-            <CardContent className="h-[420px] md:h-[520px]">
+            <CardContent className="h-[26.25rem] md:h-[32.5rem]">
               <MapRound
                 key={currentRound.id}
                 apiKey={googleMapsApiKey}

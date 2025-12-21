@@ -25,7 +25,7 @@
     --border: 20 12% 86%;
     --input: 20 12% 86%;
     --ring: 213 58% 35%;
-    --radius: 14px;
+    --radius: 0.875rem;
     --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
   }
 

@@ -44,7 +44,7 @@ export default function SetupView({
         </CardHeader>
         <CardContent className="space-y-5">
           <label
-            className={`flex min-h-[220px] cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed p-6 text-center transition ${
+            className={`flex min-h-[13.75rem] cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border border-dashed p-6 text-center transition ${
               dragActive ? "border-primary bg-primary/10" : "border-border/70 bg-muted/30"
             }`}
             onDragEnter={(event) => {
