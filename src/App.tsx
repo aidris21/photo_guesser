@@ -374,7 +374,7 @@ function App() {
               </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="grid gap-6 lg:grid-cols-[0.85fr_1.35fr]">
               <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
                 <CardHeader>
                   <CardTitle>{currentRound.image.name}</CardTitle>
@@ -399,7 +399,7 @@ function App() {
                       Click on the map to place a pin close to the photo’s origin.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="h-[360px]">
+                  <CardContent className="h-[420px] md:h-[520px]">
                     <MapRound
                       key={currentRound.id}
                       apiKey={googleMapsApiKey}
