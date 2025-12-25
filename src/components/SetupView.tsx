@@ -48,7 +48,7 @@ export default function SetupView({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+      <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
         <CardHeader>
           <CardTitle>Upload your photo set</CardTitle>
           <CardDescription>We’ll scan EXIF data to find GPS coordinates for each image.</CardDescription>
@@ -120,7 +120,7 @@ export default function SetupView({
           )}
 
           {uploads.length > 0 && (
-            <div className="rounded-2xl border border-border/70 bg-white/70 p-4">
+            <div className="rounded-2xl border border-border/70 bg-card/70 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-foreground">{uploads.length} images loaded</p>
@@ -137,7 +137,7 @@ export default function SetupView({
                 {uploads.map((image) => (
                   <span
                     key={image.id}
-                    className="rounded-full border border-border/70 bg-white/80 px-3 py-1"
+                    className="rounded-full border border-border/70 bg-muted/40 px-3 py-1"
                   >
                     {image.name}
                   </span>
@@ -158,7 +158,7 @@ export default function SetupView({
         </CardContent>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+      <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
         <CardHeader>
           <CardTitle>Game setup</CardTitle>
           <CardDescription>Customize your round order and map settings.</CardDescription>

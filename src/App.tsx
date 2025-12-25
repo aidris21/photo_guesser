@@ -159,10 +159,10 @@ function App() {
   const progressValue = rounds.length ? ((currentRoundIndex + 1) / rounds.length) * 100 : 0
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(254,249,235,0.9),_rgba(255,255,255,0.2)),linear-gradient(120deg,_rgba(244,244,249,0.9),_rgba(235,246,255,0.9))] text-foreground">
+    <div className="app-shell min-h-screen text-foreground">
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute left-[-20%] top-[-10%] h-[22.5rem] w-[22.5rem] rounded-full bg-amber-200/40 blur-[7.5rem]" />
-        <div className="pointer-events-none absolute right-[-10%] top-[20%] h-[20rem] w-[20rem] rounded-full bg-sky-200/40 blur-[7.5rem]" />
+        <div className="pointer-events-none absolute left-[-20%] top-[-10%] h-[22.5rem] w-[22.5rem] rounded-full blur-[7.5rem] app-glow-1" />
+        <div className="pointer-events-none absolute right-[-10%] top-[20%] h-[20rem] w-[20rem] rounded-full blur-[7.5rem] app-glow-2" />
       </div>
 
       <div className="container relative mx-auto flex min-h-screen flex-col gap-8 px-4 py-10">

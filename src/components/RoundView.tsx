@@ -37,7 +37,7 @@ export default function RoundView({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/70 p-4 shadow-sm backdrop-blur md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card/80 p-4 shadow-sm backdrop-blur md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
             Round {currentRoundIndex + 1} of {totalRounds}
@@ -51,13 +51,13 @@ export default function RoundView({
           </div>
           <Progress value={progressValue} />
         </div>
-        <div className="rounded-full border border-border/70 bg-white/80 px-4 py-2 text-sm font-semibold">
+        <div className="rounded-full border border-border/70 bg-muted/40 px-4 py-2 text-sm font-semibold">
           Total score: {totalScore.toLocaleString()}
         </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[0.85fr_1.35fr]">
-        <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+        <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
           <CardHeader>
             <CardTitle>{currentRound.image.name}</CardTitle>
             <CardDescription>Study the details before you guess.</CardDescription>
@@ -74,7 +74,7 @@ export default function RoundView({
         </Card>
 
         <div className="space-y-4">
-          <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+          <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
             <CardHeader>
               <CardTitle>Your guess</CardTitle>
               <CardDescription>Click on the map to place a pin close to the photo’s origin.</CardDescription>
@@ -101,7 +101,7 @@ export default function RoundView({
           </div>
 
           {isResult && currentRound.distanceKm !== null && currentRound.score !== null && (
-            <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+            <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
               <CardHeader>
                 <CardTitle>Round results</CardTitle>
                 <CardDescription>Here’s how close you were.</CardDescription>
