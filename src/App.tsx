@@ -6,9 +6,10 @@ import CompleteView from "@/components/CompleteView"
 import RoundView from "@/components/RoundView"
 import SetupView from "@/components/SetupView"
 import { extractGps } from "@/lib/exif"
-import { haversineKm, scoreGuess } from "@/lib/geo"
+import { haversineKm, scoreGuess, ScoreScale } from "@/lib/geo"
 import { shuffle } from "@/lib/random"
-import type { GameRound, RoundOrder, Stage, UploadImage } from "@/types/game"
+import { RoundOrder, Stage } from "@/types/game"
+import type { GameRound, UploadImage } from "@/types/game"
 
 const googleMapsApiKey = import.meta.env.GOOGLE_MAPS_API_KEY as string | undefined
 
@@ -22,8 +23,9 @@ function makeId(file: File) {
 function App() {
   const [uploads, setUploads] = useState<UploadImage[]>([])
   const [rounds, setRounds] = useState<GameRound[]>([])
-  const [stage, setStage] = useState<Stage>("setup")
-  const [roundOrder, setRoundOrder] = useState<RoundOrder>("upload")
+  const [stage, setStage] = useState<Stage>(Stage.Setup)
+  const [roundOrder, setRoundOrder] = useState<RoundOrder>(RoundOrder.Upload)
+  const [scoreScale, setScoreScale] = useState<ScoreScale>(ScoreScale.City)
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0)
   const [isParsing, setIsParsing] = useState(false)
 
@@ -96,7 +98,7 @@ function App() {
 
     setUploads(parsedImages)
     setRounds([])
-    setStage("setup")
+    setStage(Stage.Setup)
     setCurrentRoundIndex(0)
     setIsParsing(false)
   }
@@ -105,7 +107,7 @@ function App() {
     if (!playableUploads.length) {
       return
     }
-    const ordered = roundOrder === "random" ? shuffle(playableUploads) : playableUploads
+    const ordered = roundOrder === RoundOrder.Random ? shuffle(playableUploads) : playableUploads
     const nextRounds = ordered.map((image) => ({
       id: image.id,
       image,
@@ -115,7 +117,7 @@ function App() {
     }))
     setRounds(nextRounds)
     setCurrentRoundIndex(0)
-    setStage("guess")
+    setStage(Stage.Guess)
   }
 
   const updateCurrentRound = (updates: Partial<GameRound>) => {
@@ -129,18 +131,18 @@ function App() {
       return
     }
     const distanceKm = haversineKm(currentRound.guess, currentRound.image.gps)
-    const score = scoreGuess(distanceKm)
+    const score = scoreGuess(distanceKm, scoreScale)
     updateCurrentRound({ distanceKm, score })
-    setStage("result")
+    setStage(Stage.Result)
   }
 
   const handleNextRound = () => {
     if (currentRoundIndex + 1 >= rounds.length) {
-      setStage("complete")
+      setStage(Stage.Complete)
       return
     }
     setCurrentRoundIndex((index) => index + 1)
-    setStage("guess")
+    setStage(Stage.Guess)
   }
 
   const replayGame = () => {
@@ -150,38 +152,40 @@ function App() {
   const resetUploads = () => {
     setUploads([])
     setRounds([])
-    setStage("setup")
+    setStage(Stage.Setup)
     setCurrentRoundIndex(0)
   }
 
   const progressValue = rounds.length ? ((currentRoundIndex + 1) / rounds.length) * 100 : 0
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(254,249,235,0.9),_rgba(255,255,255,0.2)),linear-gradient(120deg,_rgba(244,244,249,0.9),_rgba(235,246,255,0.9))] text-foreground">
+    <div className="app-shell min-h-screen text-foreground">
       <div className="relative overflow-hidden">
-        <div className="pointer-events-none absolute left-[-20%] top-[-10%] h-[22.5rem] w-[22.5rem] rounded-full bg-amber-200/40 blur-[7.5rem]" />
-        <div className="pointer-events-none absolute right-[-10%] top-[20%] h-[20rem] w-[20rem] rounded-full bg-sky-200/40 blur-[7.5rem]" />
+        <div className="pointer-events-none absolute left-[-20%] top-[-10%] h-[22.5rem] w-[22.5rem] rounded-full blur-[7.5rem] app-glow-1" />
+        <div className="pointer-events-none absolute right-[-10%] top-[20%] h-[20rem] w-[20rem] rounded-full blur-[7.5rem] app-glow-2" />
       </div>
 
       <div className="container relative mx-auto flex min-h-screen flex-col gap-8 px-4 py-10">
-        <AppHeader compact={stage === "guess" || stage === "result"} />
+        <AppHeader compact={stage === Stage.Guess || stage === Stage.Result} />
 
-        {stage === "setup" && (
+        {stage === Stage.Setup && (
           <SetupView
             uploads={uploads}
             playableUploads={playableUploads}
             excludedUploads={excludedUploads}
             isParsing={isParsing}
             roundOrder={roundOrder}
+            scoreScale={scoreScale}
             googleMapsApiKey={googleMapsApiKey}
             onFiles={handleFiles}
             onRoundOrderChange={setRoundOrder}
+            onScoreScaleChange={setScoreScale}
             onStart={startGame}
             onReset={resetUploads}
           />
         )}
 
-        {(stage === "guess" || stage === "result") && currentRound && (
+        {(stage === Stage.Guess || stage === Stage.Result) && currentRound && (
           <RoundView
             stage={stage}
             currentRound={currentRound}
@@ -196,7 +200,7 @@ function App() {
           />
         )}
 
-        {stage === "complete" && (
+        {stage === Stage.Complete && (
           <CompleteView
             rounds={rounds}
             totalScore={totalScore}

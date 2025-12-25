@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import type { RoundOrder, UploadImage } from "@/types/game"
+import { ScoreScale } from "@/lib/geo"
+import { RoundOrder } from "@/types/game"
+import type { UploadImage } from "@/types/game"
 
 type SetupViewProps = {
   uploads: UploadImage[]
@@ -13,9 +15,11 @@ type SetupViewProps = {
   excludedUploads: UploadImage[]
   isParsing: boolean
   roundOrder: RoundOrder
+  scoreScale: ScoreScale
   googleMapsApiKey?: string
   onFiles: (files: File[]) => void
   onRoundOrderChange: (order: RoundOrder) => void
+  onScoreScaleChange: (scale: ScoreScale) => void
   onStart: () => void
   onReset: () => void
 }
@@ -26,18 +30,25 @@ export default function SetupView({
   excludedUploads,
   isParsing,
   roundOrder,
+  scoreScale,
   googleMapsApiKey,
   onFiles,
   onRoundOrderChange,
+  onScoreScaleChange,
   onStart,
   onReset,
 }: SetupViewProps) {
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const scoreOptions: Record<ScoreScale, { label: string; description: string }> = {
+    [ScoreScale.City]: { label: "City scale", description: "Best for close memories within a metro area." },
+    [ScoreScale.State]: { label: "State scale", description: "A forgiving midpoint for regions and road trips." },
+    [ScoreScale.Country]: { label: "Country scale", description: "Loose scoring for big, cross-country spreads." },
+  }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-      <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+      <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
         <CardHeader>
           <CardTitle>Upload your photo set</CardTitle>
           <CardDescription>We’ll scan EXIF data to find GPS coordinates for each image.</CardDescription>
@@ -109,7 +120,7 @@ export default function SetupView({
           )}
 
           {uploads.length > 0 && (
-            <div className="rounded-2xl border border-border/70 bg-white/70 p-4">
+            <div className="rounded-2xl border border-border/70 bg-card/70 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-foreground">{uploads.length} images loaded</p>
@@ -126,7 +137,7 @@ export default function SetupView({
                 {uploads.map((image) => (
                   <span
                     key={image.id}
-                    className="rounded-full border border-border/70 bg-white/80 px-3 py-1"
+                    className="rounded-full border border-border/70 bg-muted/40 px-3 py-1"
                   >
                     {image.name}
                   </span>
@@ -147,7 +158,7 @@ export default function SetupView({
         </CardContent>
       </Card>
 
-      <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+      <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
         <CardHeader>
           <CardTitle>Game setup</CardTitle>
           <CardDescription>Customize your round order and map settings.</CardDescription>
@@ -159,19 +170,48 @@ export default function SetupView({
               type="single"
               value={roundOrder}
               onValueChange={(value) => {
-                if (value === "upload" || value === "random") {
+                if (value === RoundOrder.Upload || value === RoundOrder.Random) {
                   onRoundOrderChange(value)
                 }
               }}
               className="grid grid-cols-2 gap-2"
             >
-              <ToggleGroupItem value="upload" className="w-full justify-center">
+              <ToggleGroupItem value={RoundOrder.Upload} className="w-full justify-center">
                 Upload order
               </ToggleGroupItem>
-              <ToggleGroupItem value="random" className="w-full justify-center">
+              <ToggleGroupItem value={RoundOrder.Random} className="w-full justify-center">
                 Randomized
               </ToggleGroupItem>
             </ToggleGroup>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-foreground">Scoring scale</p>
+            <ToggleGroup
+              type="single"
+              value={scoreScale}
+              onValueChange={(value) => {
+                if (
+                  value === ScoreScale.City ||
+                  value === ScoreScale.State ||
+                  value === ScoreScale.Country
+                ) {
+                  onScoreScaleChange(value)
+                }
+              }}
+              className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+            >
+              <ToggleGroupItem value={ScoreScale.City} className="w-full justify-center">
+                City
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ScoreScale.State} className="w-full justify-center">
+                State
+              </ToggleGroupItem>
+              <ToggleGroupItem value={ScoreScale.Country} className="w-full justify-center">
+                Country
+              </ToggleGroupItem>
+            </ToggleGroup>
+            <p className="text-xs text-muted-foreground">{scoreOptions[scoreScale].description}</p>
           </div>
 
           <div className="space-y-2 rounded-2xl border border-border/70 bg-muted/30 p-4">

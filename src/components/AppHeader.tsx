@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge"
+import ThemeToggle from "@/components/ThemeToggle"
 
 type AppHeaderProps = {
   compact?: boolean
@@ -7,7 +7,7 @@ type AppHeaderProps = {
 export default function AppHeader({ compact = false }: AppHeaderProps) {
   if (compact) {
     return (
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex min-w-0 items-center gap-3">
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-muted-foreground">
             <span className="h-[0.0625rem] w-8 bg-muted-foreground/40" />
@@ -17,18 +17,21 @@ export default function AppHeader({ compact = false }: AppHeaderProps) {
             Trace the memories on a living map.
           </span>
         </div>
-        <Badge variant="secondary" className="px-3 py-1 text-xs">
-          MVP
-        </Badge>
+        <div className="flex items-center gap-3">
+          <ThemeToggle size="sm" />
+        </div>
       </header>
     )
   }
 
   return (
     <header className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-muted-foreground">
-        <span className="h-[0.0625rem] w-8 bg-muted-foreground/40" />
-        PhotoGuesser
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-muted-foreground">
+          <span className="h-[0.0625rem] w-8 bg-muted-foreground/40" />
+          PhotoGuesser
+        </div>
+        <ThemeToggle size="default" />
       </div>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
@@ -39,14 +42,6 @@ export default function AppHeader({ compact = false }: AppHeaderProps) {
             Upload your favorite photos, then test your memory by dropping pins where those moments
             happened. The closer you are, the bigger the score.
           </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary" className="px-3 py-1 text-sm">
-            MVP Build
-          </Badge>
-          <Badge variant="outline" className="px-3 py-1 text-sm">
-            GeoGuessr-style scoring
-          </Badge>
         </div>
       </div>
     </header>

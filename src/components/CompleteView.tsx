@@ -19,7 +19,7 @@ export default function CompleteView({
   onReset,
 }: CompleteViewProps) {
   return (
-    <Card className="border-border/60 bg-white/70 shadow-sm backdrop-blur">
+    <Card className="border-border/60 bg-card/80 shadow-sm backdrop-blur">
       <CardHeader>
         <CardTitle>That’s the journey!</CardTitle>
         <CardDescription>Relive the highlights and play again.</CardDescription>
@@ -44,7 +44,7 @@ export default function CompleteView({
           {rounds.map((round, index) => (
             <div
               key={round.id}
-              className="flex items-center gap-4 rounded-2xl border border-border/70 bg-white/80 p-4"
+              className="flex items-center gap-4 rounded-2xl border border-border/70 bg-card/70 p-4"
             >
               <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-xl bg-muted">
                 <img src={round.image.url} alt={round.image.name} className="h-full w-full object-cover" />
