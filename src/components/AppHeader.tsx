@@ -40,14 +40,6 @@ export default function AppHeader({ compact = false }: AppHeaderProps) {
             happened. The closer you are, the bigger the score.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary" className="px-3 py-1 text-sm">
-            MVP Build
-          </Badge>
-          <Badge variant="outline" className="px-3 py-1 text-sm">
-            GeoGuessr-style scoring
-          </Badge>
-        </div>
       </div>
     </header>
   )

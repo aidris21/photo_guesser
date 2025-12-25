@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import type { ScoreScale } from "@/lib/geo"
 import type { RoundOrder, UploadImage } from "@/types/game"
 
 type SetupViewProps = {
@@ -13,9 +14,11 @@ type SetupViewProps = {
   excludedUploads: UploadImage[]
   isParsing: boolean
   roundOrder: RoundOrder
+  scoreScale: ScoreScale
   googleMapsApiKey?: string
   onFiles: (files: File[]) => void
   onRoundOrderChange: (order: RoundOrder) => void
+  onScoreScaleChange: (scale: ScoreScale) => void
   onStart: () => void
   onReset: () => void
 }
@@ -26,14 +29,21 @@ export default function SetupView({
   excludedUploads,
   isParsing,
   roundOrder,
+  scoreScale,
   googleMapsApiKey,
   onFiles,
   onRoundOrderChange,
+  onScoreScaleChange,
   onStart,
   onReset,
 }: SetupViewProps) {
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const scoreOptions: Record<ScoreScale, { label: string; description: string }> = {
+    city: { label: "City scale", description: "Best for close memories within a metro area." },
+    state: { label: "State scale", description: "A forgiving midpoint for regions and road trips." },
+    country: { label: "Country scale", description: "Loose scoring for big, cross-country spreads." },
+  }
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
@@ -172,6 +182,31 @@ export default function SetupView({
                 Randomized
               </ToggleGroupItem>
             </ToggleGroup>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-foreground">Scoring scale</p>
+            <ToggleGroup
+              type="single"
+              value={scoreScale}
+              onValueChange={(value) => {
+                if (value === "city" || value === "state" || value === "country") {
+                  onScoreScaleChange(value)
+                }
+              }}
+              className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+            >
+              <ToggleGroupItem value="city" className="w-full justify-center">
+                City
+              </ToggleGroupItem>
+              <ToggleGroupItem value="state" className="w-full justify-center">
+                State
+              </ToggleGroupItem>
+              <ToggleGroupItem value="country" className="w-full justify-center">
+                Country
+              </ToggleGroupItem>
+            </ToggleGroup>
+            <p className="text-xs text-muted-foreground">{scoreOptions[scoreScale].description}</p>
           </div>
 
           <div className="space-y-2 rounded-2xl border border-border/70 bg-muted/30 p-4">

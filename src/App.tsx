@@ -7,6 +7,7 @@ import RoundView from "@/components/RoundView"
 import SetupView from "@/components/SetupView"
 import { extractGps } from "@/lib/exif"
 import { haversineKm, scoreGuess } from "@/lib/geo"
+import type { ScoreScale } from "@/lib/geo"
 import { shuffle } from "@/lib/random"
 import type { GameRound, RoundOrder, Stage, UploadImage } from "@/types/game"
 
@@ -24,6 +25,7 @@ function App() {
   const [rounds, setRounds] = useState<GameRound[]>([])
   const [stage, setStage] = useState<Stage>("setup")
   const [roundOrder, setRoundOrder] = useState<RoundOrder>("upload")
+  const [scoreScale, setScoreScale] = useState<ScoreScale>("city")
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0)
   const [isParsing, setIsParsing] = useState(false)
 
@@ -129,7 +131,7 @@ function App() {
       return
     }
     const distanceKm = haversineKm(currentRound.guess, currentRound.image.gps)
-    const score = scoreGuess(distanceKm)
+    const score = scoreGuess(distanceKm, scoreScale)
     updateCurrentRound({ distanceKm, score })
     setStage("result")
   }
@@ -173,9 +175,11 @@ function App() {
             excludedUploads={excludedUploads}
             isParsing={isParsing}
             roundOrder={roundOrder}
+            scoreScale={scoreScale}
             googleMapsApiKey={googleMapsApiKey}
             onFiles={handleFiles}
             onRoundOrderChange={setRoundOrder}
+            onScoreScaleChange={setScoreScale}
             onStart={startGame}
             onReset={resetUploads}
           />
