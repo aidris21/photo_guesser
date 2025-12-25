@@ -184,7 +184,7 @@ export default function RoundView({
             role="dialog"
             aria-modal="true"
             aria-label={`${currentRound.image.name} expanded`}
-            className="relative z-10 flex max-h-[90vh] w-full max-w-6xl flex-col gap-4 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-xl"
+            className="relative z-10 flex h-[90vh] w-full max-w-6xl flex-col gap-4 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-xl"
           >
             <div className="flex items-center justify-between gap-3">
               <div className="min-w-0">
