@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import ThemeToggle from "@/components/ThemeToggle"
 
 type AppHeaderProps = {
@@ -20,9 +19,6 @@ export default function AppHeader({ compact = false }: AppHeaderProps) {
         </div>
         <div className="flex items-center gap-3">
           <ThemeToggle size="sm" />
-          <Badge variant="secondary" className="px-3 py-1 text-xs">
-            MVP
-          </Badge>
         </div>
       </header>
     )

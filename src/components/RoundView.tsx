@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+import { Maximize2 } from "lucide-react"
 import MapRound from "@/components/MapRound"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -32,8 +34,30 @@ export default function RoundView({
   onConfirmGuess,
   onNextRound,
 }: RoundViewProps) {
+  const [isImageOpen, setIsImageOpen] = useState(false)
   const isResult = stage === Stage.Result
   const isLastRound = currentRoundIndex + 1 === totalRounds
+
+  useEffect(() => {
+    if (!isImageOpen) {
+      return
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsImageOpen(false)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isImageOpen])
 
   return (
     <div className="space-y-6">
@@ -63,12 +87,32 @@ export default function RoundView({
             <CardDescription>Study the details before you guess.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-center rounded-2xl border border-border/70 bg-muted/30 p-2">
-              <img
-                src={currentRound.image.url}
-                alt={currentRound.image.name}
-                className="max-h-[30rem] w-full rounded-xl object-contain"
-              />
+            <div className="relative flex items-center justify-center rounded-2xl border border-border/70 bg-muted/30 p-2">
+              <button
+                type="button"
+                onClick={() => setIsImageOpen(true)}
+                className="group relative flex w-full items-center justify-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
+                aria-label={`Expand ${currentRound.image.name}`}
+                aria-haspopup="dialog"
+              >
+                <img
+                  src={currentRound.image.url}
+                  alt={currentRound.image.name}
+                  className="max-h-[30rem] w-full rounded-xl object-contain"
+                />
+                <span className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-transparent transition group-hover:ring-primary/40" />
+              </button>
+              <Button
+                type="button"
+                size="icon"
+                variant="secondary"
+                onClick={() => setIsImageOpen(true)}
+                className="absolute right-4 top-4 shadow-sm"
+                aria-haspopup="dialog"
+                aria-label={`Expand ${currentRound.image.name}`}
+              >
+                <Maximize2 className="h-4 w-4" aria-hidden="true" />
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -127,6 +171,40 @@ export default function RoundView({
           )}
         </div>
       </div>
+
+      {isImageOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <button
+            type="button"
+            onClick={() => setIsImageOpen(false)}
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            aria-label="Close expanded image"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${currentRound.image.name} expanded`}
+            className="relative z-10 flex max-h-[90vh] w-full max-w-6xl flex-col gap-4 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-xl"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Photo detail</p>
+                <h3 className="truncate text-lg font-semibold">{currentRound.image.name}</h3>
+              </div>
+              <Button type="button" variant="ghost" size="sm" onClick={() => setIsImageOpen(false)}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 min-h-0 overflow-hidden rounded-xl border border-border/70 bg-muted/30 p-2">
+              <img
+                src={currentRound.image.url}
+                alt={currentRound.image.name}
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
