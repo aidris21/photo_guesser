@@ -3,15 +3,19 @@ export type LatLng = {
   lng: number
 }
 
-export type ScoreScale = "city" | "state" | "country"
+export enum ScoreScale {
+  City = "city",
+  State = "state",
+  Country = "country",
+}
 
 const EARTH_RADIUS_KM = 6371
 // Tuned for city-level accuracy expectations.
 const MAX_SCORE = 5000
 const SCORE_PROFILES: Record<ScoreScale, { scaleKm: number; falloff: number }> = {
-  city: { scaleKm: 12, falloff: 1.6 },
-  state: { scaleKm: 220, falloff: 1.4 },
-  country: { scaleKm: 900, falloff: 1.2 },
+  [ScoreScale.City]: { scaleKm: 12, falloff: 1.6 },
+  [ScoreScale.State]: { scaleKm: 220, falloff: 1.4 },
+  [ScoreScale.Country]: { scaleKm: 900, falloff: 1.2 },
 }
 
 function toRadians(deg: number) {
@@ -31,7 +35,7 @@ export function haversineKm(a: LatLng, b: LatLng) {
   return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(h))
 }
 
-export function scoreGuess(distanceKm: number, scale: ScoreScale = "city") {
+export function scoreGuess(distanceKm: number, scale: ScoreScale = ScoreScale.City) {
   const profile = SCORE_PROFILES[scale]
   const normalized = (distanceKm / profile.scaleKm) ** profile.falloff
   const raw = MAX_SCORE / (1 + normalized)

@@ -4,10 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress"
 import { formatDistance } from "@/lib/geo"
 import type { LatLng } from "@/lib/geo"
-import type { GameRound, Stage } from "@/types/game"
+import { Stage } from "@/types/game"
+import type { GameRound } from "@/types/game"
 
 type RoundViewProps = {
-  stage: Extract<Stage, "guess" | "result">
+  stage: Stage.Guess | Stage.Result
   currentRound: GameRound
   currentRoundIndex: number
   totalRounds: number
@@ -31,7 +32,7 @@ export default function RoundView({
   onConfirmGuess,
   onNextRound,
 }: RoundViewProps) {
-  const isResult = stage === "result"
+  const isResult = stage === Stage.Result
   const isLastRound = currentRoundIndex + 1 === totalRounds
 
   return (

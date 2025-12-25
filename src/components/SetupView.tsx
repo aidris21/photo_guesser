@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import type { ScoreScale } from "@/lib/geo"
-import type { RoundOrder, UploadImage } from "@/types/game"
+import { ScoreScale } from "@/lib/geo"
+import { RoundOrder } from "@/types/game"
+import type { UploadImage } from "@/types/game"
 
 type SetupViewProps = {
   uploads: UploadImage[]
@@ -40,9 +41,9 @@ export default function SetupView({
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const scoreOptions: Record<ScoreScale, { label: string; description: string }> = {
-    city: { label: "City scale", description: "Best for close memories within a metro area." },
-    state: { label: "State scale", description: "A forgiving midpoint for regions and road trips." },
-    country: { label: "Country scale", description: "Loose scoring for big, cross-country spreads." },
+    [ScoreScale.City]: { label: "City scale", description: "Best for close memories within a metro area." },
+    [ScoreScale.State]: { label: "State scale", description: "A forgiving midpoint for regions and road trips." },
+    [ScoreScale.Country]: { label: "Country scale", description: "Loose scoring for big, cross-country spreads." },
   }
 
   return (
@@ -169,16 +170,16 @@ export default function SetupView({
               type="single"
               value={roundOrder}
               onValueChange={(value) => {
-                if (value === "upload" || value === "random") {
+                if (value === RoundOrder.Upload || value === RoundOrder.Random) {
                   onRoundOrderChange(value)
                 }
               }}
               className="grid grid-cols-2 gap-2"
             >
-              <ToggleGroupItem value="upload" className="w-full justify-center">
+              <ToggleGroupItem value={RoundOrder.Upload} className="w-full justify-center">
                 Upload order
               </ToggleGroupItem>
-              <ToggleGroupItem value="random" className="w-full justify-center">
+              <ToggleGroupItem value={RoundOrder.Random} className="w-full justify-center">
                 Randomized
               </ToggleGroupItem>
             </ToggleGroup>
@@ -190,19 +191,23 @@ export default function SetupView({
               type="single"
               value={scoreScale}
               onValueChange={(value) => {
-                if (value === "city" || value === "state" || value === "country") {
+                if (
+                  value === ScoreScale.City ||
+                  value === ScoreScale.State ||
+                  value === ScoreScale.Country
+                ) {
                   onScoreScaleChange(value)
                 }
               }}
               className="grid grid-cols-1 gap-2 sm:grid-cols-3"
             >
-              <ToggleGroupItem value="city" className="w-full justify-center">
+              <ToggleGroupItem value={ScoreScale.City} className="w-full justify-center">
                 City
               </ToggleGroupItem>
-              <ToggleGroupItem value="state" className="w-full justify-center">
+              <ToggleGroupItem value={ScoreScale.State} className="w-full justify-center">
                 State
               </ToggleGroupItem>
-              <ToggleGroupItem value="country" className="w-full justify-center">
+              <ToggleGroupItem value={ScoreScale.Country} className="w-full justify-center">
                 Country
               </ToggleGroupItem>
             </ToggleGroup>

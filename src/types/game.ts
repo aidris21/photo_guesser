@@ -16,5 +16,14 @@ export type GameRound = {
   score: number | null
 }
 
-export type Stage = "setup" | "guess" | "result" | "complete"
-export type RoundOrder = "upload" | "random"
+export enum Stage {
+  Setup = "setup",
+  Guess = "guess",
+  Result = "result",
+  Complete = "complete",
+}
+
+export enum RoundOrder {
+  Upload = "upload",
+  Random = "random",
+}
