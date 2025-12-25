@@ -1,5 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { type ThemePreference, useTheme } from "@/context/theme"
+import { type ThemePreference } from "@/context/theme-context"
+import { useTheme } from "@/context/useTheme"
 import { cn } from "@/lib/utils"
 
 const themeOptions: Array<{ value: ThemePreference; label: string }> = [
