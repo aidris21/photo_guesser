@@ -60,11 +60,13 @@ export function ThemeProvider({ children, defaultTheme = "system" }: ThemeProvid
 
     updateSystemTheme()
 
+
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", updateSystemTheme)
       return () => mediaQuery.removeEventListener("change", updateSystemTheme)
     }
 
+    // Deprecated, but we keep for users on older Chromium and Safari versions
     mediaQuery.addListener(updateSystemTheme)
     return () => mediaQuery.removeListener(updateSystemTheme)
   }, [])
